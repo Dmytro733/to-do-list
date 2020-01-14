@@ -1,0 +1,97 @@
+@mixin bg-white
+    background-color: #ffffff
+    border: solid 2px #185a83
+    border-radius: 5px
+    width: 20%
+    color: #000000
+
+@mixin bg-blue
+    background-color: #529dcc
+    border: solid 2px #185a83
+    border-radius: 5px
+    width: 20%
+    color: #ffffff
+
+li
+    display: flex
+    align-items: center
+    // font-family: 'Lexend Zetta', sans-serif;
+    font-weight: 700
+    font-size: 8px
+    padding: 5px 0 5px 15px
+    background-color: #efefef
+    border: solid 2px #265e8f
+    border-radius: 5px
+    height: 40px
+    width: 100%
+    margin-bottom: 2px
+
+input
+    // font-family: 'Lexend Zetta', sans-serif;
+    font-size: 8px
+    font-weight: 700
+    padding: 5px 0 5px 15px
+    background-color: #efefef
+    border: solid 2px #265e8f
+    border-radius: 5px
+    height: 40px
+    width: 270px
+    cursor: auto 
+    
+
+      
+.container-fluid
+    height: 100vh;
+    width: 100%
+    background-size: cover
+    background-image: linear-gradient(180deg, rgba(9,88,121,1) 0%, rgba(0,212,255,1) 100%);
+    .task-container
+        padding: 0 15px 0 15px
+        min-width: 300px
+        
+        h1
+            font-size: 3rem
+            font-family: 'Indie Flower', cursive;
+            margin: 10% 0 0 0
+            opacity: 0.7
+            color: #225053
+            text-shadow: 0px 0px 7px #dddddd, 0 0 1em #000000
+            margin-top: 50%
+        h2
+            margin: 50px 0 50px 0
+            color: white
+        
+        span
+            font-family: 'Lexend Zetta', sans-serif;
+            color: #ffffff
+            font-size: 1%
+            display: none
+            margin-top: 10%
+
+        .listUpcoming, .listFinished
+            ul
+                padding: 0
+                list-style: none
+            li:first-child
+                margin-top: 0px
+            
+        .finished
+            li
+                background-color:  #0589ae
+                color: #ffffff
+
+        .btn    
+            .btn-close, .btn-add
+                margin-top: 20%
+                transition: all 0.5s
+                color: #ffffff
+                border-radius: 100%
+                box-shadow: 0px 5px 15px 1px #757575
+            .btn-close
+                display: none
+            .btn-close:hover, .btn-add:hover
+                box-shadow: 0px 5px 15px 1px #ffffff
+                transition: all 0.5s
+
+
+@import "node_modules/bootstrap/scss/bootstrap";
