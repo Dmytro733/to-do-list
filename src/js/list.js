@@ -27,9 +27,24 @@ window.onload = function(){
                     btnadd.style.display = 'block';
                     span[1].style.display = 'none';
                     span[0].style.display = 'block';
+
+                   let clickCount = 0;  
+                                   
+        
                     li.addEventListener('click', function(e){
-                        addToFinish(e.target);
-                        this.parentNode.removeChild(this);
+                        clickCount++;
+                        if (clickCount === 1) {
+                            singleClickTimer = setTimeout(() => {
+                                clickCount = 0;
+                                addToFinish(e.target);
+                                this.parentNode.removeChild(this);
+                            }, 400);
+                        } else if (clickCount === 2) {
+                            clearTimeout(singleClickTimer);
+                            clickCount = 0;
+                            Edit(e.target);
+                            this.parentNode.removeChild(this);
+                        }
                     });
                 }
             });
@@ -46,6 +61,7 @@ window.onload = function(){
             addToUpcoming(e.target);
             this.parentNode.removeChild(this);      
         };
+
     }
 
     function addToUpcoming (value){
@@ -53,10 +69,25 @@ window.onload = function(){
         list.appendChild(li);
         li.style.textDecoration = 'none';
         li.innerText = value.innerText;
-        li.ondblclick = function(e){
-            Edit(e.target);
-            this.parentNode.removeChild(this);           
-        };
+
+        let clickCount = 0;  
+                                   
+        li.addEventListener('click', function(e){
+            clickCount++;
+            if (clickCount === 1) {
+                singleClickTimer = setTimeout(() => {
+                    clickCount = 0;
+                    addToFinish(e.target);
+                    this.parentNode.removeChild(this);
+                }, 400);
+            } else if (clickCount === 2) {
+                clearTimeout(singleClickTimer);
+                clickCount = 0;
+                Edit(e.target);
+                this.parentNode.removeChild(this);
+            }
+        });
+        
     }
 
     function Edit(value){
@@ -65,30 +96,36 @@ window.onload = function(){
         input_li.value = value.innerText;
         btnadd.style.display = 'none';
         btnclose.style.display = 'block';
-        // btnclose.onclick = function(e){
-        //     e.target.removeChild(this);
-            
-        // };
+        
         input_li.addEventListener('keydown', function(e){
             if(e.keyCode === 13){
                 var li = document.createElement('li');
                 li.innerText = this.value;
                 list.appendChild(li);
-                list.removeChild(input_li);  
+                list.removeChild(input_li);
+
+                let clickCount = 0;                    
+        
+                li.addEventListener('click', function(e){
+                    clickCount++;
+                    if (clickCount === 1) {
+                     
+                        singleClickTimer = setTimeout(() => {
+                            clickCount = 0;
+                            addToFinish(e.target);
+                            this.parentNode.removeChild(this);
+                        }, 400);
+                    } else if (clickCount === 2) {
+                        
+                        clearTimeout(singleClickTimer);
+                        clickCount = 0;
+                        Edit(e.target);
+                        this.parentNode.removeChild(this);
+                    }
+                });  
             }
         });
     }
-
-    // (function (){
-    //     input.addEventListener('keydown', function(e){
-    //         if(e.keyCode === 13){
-    //             var li = document.createElement('li');
-    //             li.innerText = this.value;
-    //             list.appendChild(li);  
-    //         }
-    //     });
-    // })(); 
-    
     
     btnclose.addEventListener('click', function(){
         this.style.display = 'none';
