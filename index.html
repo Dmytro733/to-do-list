@@ -5,35 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <link href="https://fonts.googleapis.com/css?family=Indie+Flower|Lexend+Zetta&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lexend+Zetta|Prompt:700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/92c963c541.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./dist/app.css">
 </head>
 <body>
     <div class='container-fluid d-flex justify-content-center'>
-        <div class='task-container'>
+        <div class='task-container '>
             <h2 class='text-center'>THINGS TO DO</h2>
             <h1 class='text-center'>NO TASKS</h1>
-            <div class="listUpcoming">
+            <div class="Upcoming">
                 <span>UPCOMING</span>
-                <ul class='list'></ul>
-            </div>
-            <div class="task">
-                <span>NEW TASK</span>
-            </div>
-            <div class="listFinished">
-                <span>FINISHED</span>
-                <ul class='finished'>
+                <ul class='todo-list-Upcoming'>
                 </ul>
             </div>
-            <div class="btn d-flex justify-content-center">
-                <div class="btn-close">
-                    <i class="fas fa-times-circle fa-3x"></i>
-                </div>
-                <div class="btn-add">
-                    <i class="fas fa-plus-circle fa-3x"></i>
-                </div>
+            <form id="todo-form">
+                <span>NEW TASK</span>
+                <input id='add-input' type="text">
+            </form>
+            <div class="Finished">
+                <span>FINISHED</span>
+                <ul class='todo-list-Finished'>
+                </ul>
             </div>
+            <div class='btn d-flex justify-content-center' >
+                <i class="close-button fas fa-times-circle fa-3x"></i>
+                <i class="add-button fas fa-plus-circle fa-3x"></i>
+            </div>
+             
         </div>        
     </div>
 <script src="/dist/app.js"></script>
