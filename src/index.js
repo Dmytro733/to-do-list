@@ -1,4 +1,4 @@
 
 import './js/ToDo.js';
-import './sass/style.sass';
+import './css/style.css';
 import 'bootstrap';

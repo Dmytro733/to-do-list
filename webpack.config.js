@@ -22,11 +22,11 @@ let config = {
         exclude: path.resolve(__dirname, 'node_modules')
       },
       {
-        test: /\.(sa|sc|c)ss$/,
+        test: /\.css$/,
         use: [
           MiniCssExtractPlugin.loader,
-          'css-loader',
-          'sass-loader',
+          'css-loader'
+          // 'sass-loader',
         ],
       },
     ],

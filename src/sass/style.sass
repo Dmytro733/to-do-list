@@ -1,20 +1,38 @@
-ul
+body
+  font-family: 'Prompt', sans-serif
+  
+ul, body, html
   margin: 0
   padding-left: 0
   padding-right: 0
   padding-top: 0
   padding-bottom: 0
 
+
+.h1, .h2, .h3, h1, h2, h3
+  font-weight: 500
+  line-height: normal
+
+[data-type_header_capitalize=true] .h1,
+[data-type_header_capitalize=true] .h2,
+[data-type_header_capitalize=true] .h3,
+[data-type_header_capitalize=true] h1,
+[data-type_header_capitalize=true] h2,
+[data-type_header_capitalize=true] h3
+  text-transform: uppercase
+  letter-spacing: 2.5px
+
+
+.h1, h1 
+  font-size: 36px
+
+.h2, h2
+  font-size: 28px
+
+.h3, h3 
+  font-size: 22px
+
 li
-  display: flex
-  align-items: center
-  font-family: 'Prompt', sans-serif
-  font-weight: 700
-  font-size: 10.5px
-  padding: 10px 15px 10px 15px
-  background-color: #ffffff
-  border: solid 2px #7eb4be
-  border-radius: 7px
   height: 40px
   width: 100%
   margin-bottom: 5px
@@ -30,6 +48,12 @@ input
   cursor: auto 
   outline: none
 
+.show
+  display: block 
+
+.hide
+  display: none
+
 .textfield 
   display: none
 
@@ -39,12 +63,15 @@ input
 .container-fluid
   background-image: linear-gradient(180deg,#6fa7b3 10%, #a3d4d7 100%)
   .task-container
-    height: 100%
-    min-width: 300px
+    display: flex
+    flex-direction: column
+    min-height: 700px
+    max-width: 600px
+    margin: auto
+    padding: 40px 0px
     h1
       font-size: 30px
       font-weight: 700
-      font-family: 'Prompt', sans-serif
       margin: 30% 0 30% 0
       opacity: 0.7
       color: #225053
@@ -52,7 +79,6 @@ input
     h2
       font-size: 18px
       font-weight: 700
-      font-family: 'Prompt', sans-serif
       margin: 25px 0 25px 0
       color: white
     span
@@ -65,7 +91,15 @@ input
   .Upcoming, .Finished
     .todo-list-Upcoming
       .todo-item
-        .title 
+        display: flex
+        align-items: center
+        font-weight: 700
+        font-size: 10.5px
+        padding: 10px 15px 10px 15px
+        background-color: #ffffff
+        border: solid 2px #7eb4be
+        border-radius: 7px
+        .title
           margin: 0
       .todo-item:first-child
         margin-top: 0px
@@ -76,7 +110,6 @@ input
         text-decoration: line-through
   
   .todo-form
-    font-family: 'Prompt', sans-serif
     font-weight: 700
     font-size: 10.5px
     .add-input
@@ -99,5 +132,6 @@ input
       box-shadow: 0px 5px 15px 1px #ffffff
       transition: all 0.5s
 
+ @media only screen and (min-width: 769px)
 
 // @import "node_modules/bootstrap/scss/bootstrap"

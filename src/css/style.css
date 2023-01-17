@@ -1,3 +1,7 @@
+*, :after, :before, input {
+  box-sizing: border-box;
+}
+
 body{
   font-family: 'Prompt', sans-serif;
 }
@@ -25,7 +29,6 @@ ul, body, html{
   letter-spacing: 2.5px;
 }
 
-
 .h1, h1{
   font-size: 36px;
 }
@@ -50,7 +53,7 @@ input{
   background-color: #ffffff;
   border: solid 2px #7eb4be;
   border-radius: 7px;
-  height: 40px;
+  height: 55px;
   width: 100%;
   cursor: auto;
   outline: none;
@@ -70,6 +73,10 @@ input{
 
 .editing{
   display: block;
+}
+
+.text-center{
+  text-align: center;
 }
   
 .container-fluid{
@@ -151,9 +158,10 @@ span{
   display: none;
 }
       
-.btn{
+.btn-actions{
+  display: flex;
+  justify-content: center;
   margin-top: 10%;
-  cursor: auto;
 }
 
 .close-button, .add-button, .close-btn{
@@ -164,6 +172,8 @@ span{
   display: block;
   cursor: pointer;
   font-size: 40px;
+  width: 40px;
+  height: 40px;
 }
 
 .close-button, .close-btn{
