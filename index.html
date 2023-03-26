@@ -9,31 +9,29 @@
     <link rel="stylesheet" href="main.css">
   </head>
   <body>
-    <div class='container-fluid'>
-      <div class='task-container'>
-        <h2 class='text-center'>THINGS TO DO</h2>
-        <h1 class='text-center'>NO TASKS</h1>
-        <div class="Upcoming">
-          <span>UPCOMING</span>
-          <ul class='todo-list-Upcoming'>
-          </ul>
+    <todo-list class='container-fluid'>
+      <div class='container'>
+        <div class="titles">
+          <h1 class='h2 title_app text-center'>THINGS TO DO</h1>
+          <span class='h1 shadow titles-no_tasks text-center'>NO TASKS</span>
         </div>
-        <form class="todo-form">
-          <span>NEW TASK</span>
-          <input class='add-input' type="text">
-        </form>
-        <div class="Finished">
-          <span>FINISHED</span>
-          <ul class='todo-list-Finished'>
-          </ul>
+        <div class="task_lists">
+          <div class="upcoming-list"></div>
+          <div class="new_task--wrap hide-with_translate">
+            <span data-type_header_capitalize=true>new task</span>
+            <div class="new_task">
+              <input class="add-input" type="text">
+              <i class="fas fa-duotone fa-check" data-action="confirm"></i>
+              <i class="fas fa-regular fa-trash hide-with_scale" data-action="clean"></i>
+            </div>
+          </div>
+          <div class="done-list"></div>
         </div>
         <div class='btn-actions'>
-          <i class="close-button fas fa-times-circle fa-3x"></i>
-          <i class="close-btn fas fa-times-circle fa-3x"></i>
-          <i class="add-button fas fa-plus-circle fa-3x"></i>
+          <i class="fas fa-plus-circle fa-3x" data-button-action data-action="add"></i>
         </div> 
       </div>     
-    </div>
+    </todo-list>
   <script src="/main.js"></script>
   </body>
 </html>
