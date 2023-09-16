@@ -47,6 +47,14 @@ li{
 }
 
 input{
+  outline: none;
+}
+
+.item-content{
+  position: relative;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
   font-weight: 700;
   padding: 10px 15px 10px 15px;
   background-color: #ffffff;
@@ -55,7 +63,6 @@ input{
   height: 55px;
   width: 100%;
   cursor: auto;
-  outline: none;
 }
 
 .show{
@@ -86,14 +93,14 @@ input{
 }
 
 .fas{
-  width: 40px;
-  height: 40px;
-  font-size: 26px;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
   cursor: pointer;
+  color: #7f7f7f;
 }
   
 body{
@@ -142,13 +149,18 @@ span{
   transition: transform 500ms;
 }
 
-.upcoming-list, .finished-list{}
+.upcoming-list, .finished-list{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
 .new_task--wrap{
   transform: translateY(0);
   opacity: 1;
   visibility: visible;
   transition: transform 400ms, opacity 300ms;
+  padding: 30px 0px;
 }
 
 .new_task--wrap span{
@@ -160,40 +172,45 @@ span{
   position: relative;
 }
 
-.new_task--wrap .new_task [data-action="confirm"],
-.new_task--wrap .new_task [data-action="clean"]{
+[data-action="confirm"],
+[data-action="clean"],
+[data-action="edit"],
+[data-action="done"],
+[data-action="remove"]{
   position: absolute;
   top: 0;
   height: 100%;
 }
 
-.new_task--wrap .new_task [data-action="confirm"]{
-  right: -60px;
+[data-action="remove"],
+[data-action="clean"]{
+  right: 10px;
 }
 
-.new_task--wrap .new_task [data-action="clean"]{
+[data-action="edit"]{
+  right: 115px;
+}
+
+[data-action="confirm"],
+[data-action="done"]{
+  right: 60px;
+}
+
+[data-action="clean"]{
   transform: scale(1);
   transition: transform 200ms;
-  right: -120px;
 }
 
-.todo-item{
-  display: flex;
-  align-items: center;
-  font-weight: 700;
-  font-size: 10.5px;
-  padding: 10px 15px 10px 15px;
-  background-color: #ffffff;
-  border: solid 2px #7eb4be;
-  border-radius: 7px;
+.item-upcoming .fas,
+.item-done .fas{
+  transform: scale(0);
+  transition: transform 200ms;
 }
 
-.todo-item .title{
-  margin: 0;
-}
-
-.todo-item:first-child{
-  margin-top: 0px;
+.item-upcoming:hover .fas,
+.item-done:hover .fas{
+  transform: scale(1);
+  transition: transform 200ms;
 }
 
 .item-done{
@@ -218,11 +235,14 @@ span{
 }
 
 .btn-actions [data-button-action]{
+  width: 40px;
+  height: 40px;
   border-radius: 100%;
   box-shadow: 0px 5px 15px 1px #757575;
   display: block;
   font-size: 40px;
   transition: all 0.5s;
+  color: white;
 }
 
 [data-button-action]:hover{
