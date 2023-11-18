@@ -8,7 +8,7 @@
     "serve": "webpack serve --mode=development --open --hot",
     "watch": "webpack --watch"
   },
-  "author": "",
+  "author": "Dmytro",
   "license": "ISC",
   "browserslist": "> 0.5%, not dead",
   "devDependencies": {
@@ -27,5 +27,13 @@
   },
   "dependencies": {
     "bootstrap": "^5.2.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dmytro733/to-do-list.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Dmytro733/to-do-list/issues"
+  },
+  "homepage": "https://github.com/Dmytro733/to-do-list#readme"
 }

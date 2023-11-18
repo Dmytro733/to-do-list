@@ -93,14 +93,22 @@ input{
 }
 
 .fas{
-  width: 30px;
+  width: 20px;
   height: 30px;
-  font-size: 20px;
+  font-size: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   color: #7f7f7f;
+}
+
+@media screen and (min-width: 768px) {
+  .fas{
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+  }
 }
   
 body{
@@ -113,7 +121,7 @@ body{
   min-height: 100vh;
   max-width: 600px;
   margin: auto;
-  padding: 40px 0px;
+  padding: 40px 25px;
   justify-content: space-evenly;
   position: relative;
 }
@@ -149,7 +157,7 @@ span{
   transition: transform 500ms;
 }
 
-.upcoming-list, .finished-list{
+.upcoming-list, .done-list{
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -188,30 +196,42 @@ span{
 }
 
 [data-action="edit"]{
-  right: 115px;
+  right: 95px;
 }
 
 [data-action="confirm"],
 [data-action="done"]{
-  right: 60px;
+  right: 50px;
 }
 
-[data-action="clean"]{
-  transform: scale(1);
-  transition: transform 200ms;
+@media screen and (min-width: 768px) {
+  [data-action="edit"]{
+    right: 115px;
+  }
+  
+  [data-action="confirm"],
+  [data-action="done"]{
+    right: 60px;
+  }
+
+  [data-action="clean"]{
+    transform: scale(1);
+    transition: transform 200ms;
+  }
+  
+  .item-upcoming .fas,
+  .item-done .fas{
+    transform: scale(0);
+    transition: transform 200ms;
+  }
+  
+  .item-upcoming:hover .fas,
+  .item-done:hover .fas{
+    transform: scale(1);
+    transition: transform 200ms;
+  }
 }
 
-.item-upcoming .fas,
-.item-done .fas{
-  transform: scale(0);
-  transition: transform 200ms;
-}
-
-.item-upcoming:hover .fas,
-.item-done:hover .fas{
-  transform: scale(1);
-  transition: transform 200ms;
-}
 
 .item-done{
   background-color: #94c7cd;
