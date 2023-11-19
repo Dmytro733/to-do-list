@@ -24,7 +24,8 @@ class TodoList extends HTMLElement {
       upcomingList: '.upcoming-list',
       finishedList: '.done-list',
       newTaskWrap: '.new_task--wrap',
-      noTasksTitle: '.titles-no_tasks'
+      noTasksTitle: '.titles-no_tasks',
+      lineItem: '.item-content'
     }
 
     this.elements = {
@@ -52,16 +53,37 @@ class TodoList extends HTMLElement {
       ? this.goToAction.createNewTask()
       : this.goToAction.closeNewTask();
     });
+
     this.elements.cleanInputEl.addEventListener('click', () => this.goToAction.cleanInput());
+
     this.elements.newTaskWrapEl.querySelector('input').addEventListener('input', () => this.goToAction.checkingInput());
     
-    this.elements.createNewTaskEl.addEventListener('click', () => this.goToAction.createTasksList('create:new'));
+    this.elements.createNewTaskEl.addEventListener('click', () => {
+      this.elements.newTaskWrapEl.querySelector('input').hasAttribute('data-item-editing-index')
+      ? this.goToAction.createTasksList('task:edited')
+      : this.goToAction.createTasksList('task:new')
+    });
+
+    document.addEventListener('task:edited', event => {
+      this.upcomingList.push(event.detail.value);
+      this.upcomingList.splice(event.detail.item_edited_index, 1);
+      this.cleanInput();
+    })
+
+    window.addEventListener('keyup', event => {
+      if(event.keyCode == 13 && this.elements.newTaskWrapEl.querySelector('input').value != ''){
+        this.goToAction.createTasksList('create:new')
+      }
+    })
+
     this.elements.upcomingListEl.addEventListener('click', event => {
       let targetElement = event.target.nodeName;
       let targetAttr = event.target.getAttribute('data-action');
 
       if(targetElement == 'I'){
         if(targetAttr == 'confirm') this.goToAction.createTasksList('moveTo:done', event);
+        if(targetAttr == 'remove') this.goToAction.removeTask('upcoming', event);
+        if(targetAttr == 'edit') this.goToAction.editTask(event);
       }
     });
 
@@ -71,6 +93,7 @@ class TodoList extends HTMLElement {
 
       if(targetElement == 'I'){
         if(targetAttr == 'return') this.goToAction.createTasksList('moveTo:upcoming', event);
+        if(targetAttr == 'remove') this.goToAction.removeTask('done', event);
       }
     });
 
@@ -84,7 +107,8 @@ class TodoList extends HTMLElement {
     createTasksList: this.createTasksList.bind(this),
     editTask: this.editTask.bind(this),
     checkingInput: this.checkingInput.bind(this),
-    checkTaskLists: this.checkTaskLists.bind(this)
+    checkTaskLists: this.checkTaskLists.bind(this),
+    removeTask: this.removeTask.bind(this)
   }
 
   createNewTask(){
@@ -95,6 +119,10 @@ class TodoList extends HTMLElement {
   closeNewTask(){
     this.elements.newTaskWrapEl.classList.add(this.classes.hideWithTranslate);
     this.elements.buttonActionEl.setAttribute('data-action', 'add');
+
+    this.container.querySelectorAll(`${this.selectors.lineItem}.item-upcoming`).forEach(item => {
+      item.classList.remove('editing');
+    });
 
     this.cleanInput();
   }
@@ -126,37 +154,67 @@ class TodoList extends HTMLElement {
     this.checkingInput();
   }
 
-  editTask() {
+  editTask(event) {
+    this.container.querySelectorAll(`${this.selectors.lineItem}.item-upcoming`).forEach(item => {
+      item.classList.remove('editing');
+    });
+
+    let lineItem = event.target.closest('.item-content');
+    let lineItemIndex = lineItem.getAttribute('line-item-index');
+
+    lineItem.classList.add('editing');
+
+    if(this.elements.buttonActionEl.getAttribute('data-action') == 'add'){
+      this.goToAction.createNewTask();
+    }
     
+    this.elements.newTaskWrapEl.querySelector('input').setAttribute('data-item-editing-index', lineItemIndex);
+    this.elements.newTaskWrapEl.querySelector('input').value = lineItem.innerText;
+
+    this.checkingInput();
   }
 
-  removeTask() {
+  removeTask(removeFrom, event) {
+    let lineItem = event.target.closest('.item-content');
+    let lineItemIndex = lineItem.getAttribute('line-item-index');
 
+    removeFrom === 'upcoming'
+    ? this.upcomingList.splice(lineItemIndex, 1)
+    : this.doneList.splice(lineItemIndex, 1);
+    
+    this._saveToStorage();
   }
 
   createTasksList(action, event) {
-    if(action === 'create:new'){
+    if(action === 'task:new'){
       let text = this.elements.newTaskWrapEl.querySelector('input').value;
       this.upcomingList.push(text)
       this.cleanInput();
     }
 
+    if(action === 'task:edited'){
+      document.dispatchEvent(new CustomEvent('task:edited', {
+        detail: {
+          value: this.elements.newTaskWrapEl.querySelector('input').value,
+          item_edited_index: this.elements.newTaskWrapEl.querySelector('input').getAttribute('data-item-editing-index')
+        }
+      }));
+    }
+
     if(action === 'moveTo:upcoming') {
       let lineItem = event.target.closest('.item-content');
       let lineItemIndex = lineItem.getAttribute('line-item-index');
-      let text = lineItem.innerText;
       
       this.doneList.splice(lineItemIndex, 1);
-      this.upcomingList.push(text)
+      this.upcomingList.push(lineItem.innerText)
     }
     
     if(action === 'moveTo:done'){
       let lineItem = event.target.closest('.item-content');
       let lineItemIndex = lineItem.getAttribute('line-item-index');
-      let text = lineItem.innerText;
       
       this.upcomingList.splice(lineItemIndex, 1);
-      this.doneList.push(text)
+      this.doneList.push(lineItem.innerText)
     }
 
     this._saveToStorage();

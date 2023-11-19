@@ -65,6 +65,11 @@ input{
   cursor: auto;
 }
 
+.item-content.editing{
+  opacity: 0.4;
+  pointer-events: none;
+}
+
 .show{
   display: block !important;
 }
