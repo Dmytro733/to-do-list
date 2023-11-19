@@ -20,7 +20,7 @@ class TodoList extends HTMLElement {
       editTask: '[data-action="edit"]',
       buttonAction: '[data-button-action]',
       cleanInput: '[data-action="clean"]',
-      confirmTask: '[data-action="confirm"]',
+      createNewTask: '[data-action="create"]',
       upcomingList: '.upcoming-list',
       finishedList: '.done-list',
       newTaskWrap: '.new_task--wrap',
@@ -30,7 +30,7 @@ class TodoList extends HTMLElement {
     this.elements = {
       buttonActionEl: this.container.querySelector(this.selectors.buttonAction),
       cleanInputEl: this.container.querySelector(this.selectors.cleanInput),
-      confirmTaskEl: this.container.querySelector(this.selectors.confirmTask),
+      createNewTaskEl: this.container.querySelector(this.selectors.createNewTask),
       upcomingListEl: this.container.querySelector(this.selectors.upcomingList),
       finishedListEl: this.container.querySelector(this.selectors.finishedList),
       newTaskWrapEl: this.container.querySelector(this.selectors.newTaskWrap),
@@ -41,7 +41,7 @@ class TodoList extends HTMLElement {
     this.doneList = [];
       
     this._checkStorage();
-    this.checkTaskLists();
+    this.goToAction.checkTaskLists();
     this.actions();
   }
 
@@ -55,16 +55,24 @@ class TodoList extends HTMLElement {
     this.elements.cleanInputEl.addEventListener('click', () => this.goToAction.cleanInput());
     this.elements.newTaskWrapEl.querySelector('input').addEventListener('input', () => this.goToAction.checkingInput());
     
-    this.elements.confirmTaskEl.addEventListener('click', () => this.goToAction.createTasksList('upcoming'));
+    this.elements.createNewTaskEl.addEventListener('click', () => this.goToAction.createTasksList('create:new'));
     this.elements.upcomingListEl.addEventListener('click', event => {
       let targetElement = event.target.nodeName;
       let targetAttr = event.target.getAttribute('data-action');
 
       if(targetElement == 'I'){
-        if(targetAttr == 'done') this.goToAction.createTasksList('done', event)
+        if(targetAttr == 'confirm') this.goToAction.createTasksList('moveTo:done', event);
       }
     });
-    // this.elements.editTask.addEventListener('click', () => this.goToAction('editTask'));
+
+    this.elements.finishedListEl.addEventListener('click', event => {
+      let targetElement = event.target.nodeName;
+      let targetAttr = event.target.getAttribute('data-action');
+
+      if(targetElement == 'I'){
+        if(targetAttr == 'return') this.goToAction.createTasksList('moveTo:upcoming', event);
+      }
+    });
 
     this.goToAction.checkTaskLists()
   }
@@ -109,8 +117,8 @@ class TodoList extends HTMLElement {
     : this.elements.cleanInputEl.classList.add(this.classes.hideWithScale);
 
     this.elements.newTaskWrapEl.querySelector('input').value != ''
-    ? this.elements.confirmTaskEl.classList.remove(this.classes.hideWithScale)
-    : this.elements.confirmTaskEl.classList.add(this.classes.hideWithScale);
+    ? this.elements.createNewTaskEl.classList.remove(this.classes.hideWithScale)
+    : this.elements.createNewTaskEl.classList.add(this.classes.hideWithScale);
   }
 
   cleanInput(){
@@ -126,14 +134,23 @@ class TodoList extends HTMLElement {
 
   }
 
-  createTasksList(list, event) {
-    if(list === 'upcoming') {
+  createTasksList(action, event) {
+    if(action === 'create:new'){
       let text = this.elements.newTaskWrapEl.querySelector('input').value;
       this.upcomingList.push(text)
       this.cleanInput();
     }
+
+    if(action === 'moveTo:upcoming') {
+      let lineItem = event.target.closest('.item-content');
+      let lineItemIndex = lineItem.getAttribute('line-item-index');
+      let text = lineItem.innerText;
+      
+      this.doneList.splice(lineItemIndex, 1);
+      this.upcomingList.push(text)
+    }
     
-    if(list === 'done'){
+    if(action === 'moveTo:done'){
       let lineItem = event.target.closest('.item-content');
       let lineItemIndex = lineItem.getAttribute('line-item-index');
       let text = lineItem.innerText;
@@ -150,8 +167,8 @@ class TodoList extends HTMLElement {
     const listElement = new DOMParser().parseFromString(
       `<div class="item-content${list == 'upcoming' ? ' item-upcoming' : ' item-done'}" ${index != 'blank' ? `line-item-index=${index}` : ''}>
           ${list == 'upcoming'
-          ? '<i class="fas fa-solid fa-pen" data-action="edit" aria-hidden="true"></i><i class="fas fa-solid fa-check" data-action="done" aria-hidden="true"></i><i class="fas fa-solid fa-trash" data-action="remove" aria-hidden="true"></i>'
-          : '<i class="fas fa-solid fa-rotate-left" data-action="edit" aria-hidden="true"></i><i class="fas fa-solid fa-trash" data-action="done" aria-hidden="true"></i>'
+          ? '<i class="fas fa-solid fa-pen" data-action="edit" aria-hidden="true"></i><i class="fas fa-solid fa-check" data-action="confirm" aria-hidden="true"></i><i class="fas fa-solid fa-trash" data-action="remove" aria-hidden="true"></i>'
+          : '<i class="fas fa-solid fa-undo" data-action="return" aria-hidden="true"></i><i class="fas fa-solid fa-trash" data-action="remove" aria-hidden="true"></i>'
           }
           ${text}
         </div>
@@ -225,170 +242,5 @@ class TodoList extends HTMLElement {
 }
 
 customElements.define('todo-list', TodoList);
-
-
-// function addAttributeToElement(element, attrs) {
-//     for(var key in attrs) {
-//        return element.setAttribute(key, attrs[key]);
-//     }
-// }
-
-// function createList() {
-
-// }
-
-// function action() {
-
-// }
-
-// function createListItem(title){
-//     var label = createElement('lable', {className: 'title'}, title);
-//     var editInput = createElement('input', {className: 'textfield', type: 'text'});
-//     var listItem = createElement('li', {className: 'todo-item'}, {"": "http://example.com/something.jpeg", "height": "100%"}, label);
-//     var timer;
-
-//     //Edit task when pressed dblclick
-//     listItem.ondblclick = function (){    
-//         this.parentNode.removeChild(this);
-//         dontSaveValue(this);
-//         headerTasks[1].style.display = 'block';
-//         closeButton.style.display = 'none';
-//         addButton.style.display = 'none';
-//         addInput.style.display = 'block';
-//         addInput.value = label.innerText;
-//         clearTimeout(timer);
-//         if(todoListUpcoming.childElementCount <= 0){
-//             headerTasks[0].style.display = 'none';
-//         }
-//     };
-//     //Adds task to list finished
-//     listItem.onclick = function (){
-//         timer = setTimeout(() => { 
-//             this.parentNode.removeChild(this);
-//             addItemToFinished(this);
-//             save();
-//             if(todoListUpcoming.childElementCount == 0){
-//             headerTasks[0].style.display = 'none';
-//             }
-//         }, 300);
-//     };
-//     todoListUpcoming.appendChild(listItem);
-
-//     return listItem;
-// }
-
-// function dontSaveValue(value){
-//     var btn = document.querySelector('.close-btn');
-//     btn.style.display = 'block';
-//     btn.onclick = ()=>{
-//     var listItem = createListItem(value.innerText);
-//     listItem.innerText = addInput.value;
-//     btn.style.display = 'none';
-//     addButton.style.display = 'block';
-//     addInput.style.display = 'none';
-//     headerTasks[1].style.display = 'none';
-//     headerTasks[0].style.display = 'block';
-//     addInput.value = '';
-//    };
-// }
-
-
-// function addItemToFinished (value){
-//     headerTasks[2].style.display = 'block';
-//     var listItem = createListItem(value.innerText);
-//     todoListFinished.appendChild(listItem);
-//     listItem.className = 'todo-item-finished';
-
-//     //Adds back task to list upcoming 
-//     listItem.onclick = function() {
-//         backToUpcoming (this);
-//         this.parentNode.removeChild(this);
-//         save();
-//         if(todoListFinished.childElementCount == 0){
-//             headerTasks[2].style.display = 'none';
-//         }
-//     };
-// }
-// function backToUpcoming(value){
-//     createListItem(value.innerText);
-//     headerTasks[0].style.display = 'block';
-// }
-
-// function hideNoTask(){
-//     if(headerTasks){
-//         noTasks.style.display = 'none';
-//     }else{
-//         noTasks.style.display = 'block';
-//     }
-// }
-
-// function addTodoItem (event){
-//     event.preventDefault();
-//     if(addInput.value === '')return alert('Необхідно заповнити поле');
-//     createListItem(addInput.value);
-//     addInput.value = '';
-//     addInput.style.display = 'none';
-//     closeButton.style.display = 'none';
-//     addButton.style.display = 'block';
-//     btn.style.display = 'none';
-//     headerTasks[1].style.display = 'none';
-//     headerTasks[0].style.display = 'block';
-//     save();
-// }
-
-// addButton.addEventListener('click', function(){
-//     this.style.display = 'none';
-//     closeButton.style.display = 'block';
-//     addInput.style.display = 'block';
-//     headerTasks[1].style.display = 'block';
-//     hideNoTask();
-// });
-
-// closeButton.addEventListener('click', function(){
-//     this.style.display = 'none';
-//     addButton.style.display = 'block';
-//     addInput.style.display = 'none';
-//     addInput.value = '';
-//     headerTasks[1].style.display = 'none';
-//     hideNoTask();
-// });
-
-
-// function save(){
-    
-//     var todoListUpcomingArr = [];
-//     for(var i = 0; i < todoListUpcoming.children.length; i++){
-//         todoListUpcomingArr.push(todoListUpcoming.children[i].innerText);
-//     }
-    
-//     var todoListFinishedArr = [];
-//     for(var i = 0; i < todoListFinished.children.length; i++){
-//         todoListFinishedArr.push(todoListFinished.children[i].innerText);
-//     }
-//     localStorage.removeItem('todo');
-//     localStorage.setItem('todo',JSON.stringify({todoListUpcoming: todoListUpcomingArr, 
-//     todoListFinished: todoListFinishedArr}));
-// }
-// function load (){
-//     hideNoTask();
-//     return JSON.parse(localStorage.getItem('todo'));
-// }
-// var date = load();
-
-// for(var i = 0; i < date.todoListUpcoming.length; i++){
-//     let listItem = createListItem(date.todoListUpcoming[i]);
-//     todoListUpcoming.appendChild(listItem);
-//     headerTasks[0].style.display = 'block';
-//     hideNoTask(); 
-// }
-
-// for(var i = 0; i < date.todoListFinished.length; i++){
-//     let listItem = createListItem(date.todoListFinished[i]);
-//     todoListFinished.appendChild(listItem);
-//     listItem.className = 'todo-item-finished';
-//     headerTasks[2].style.display = 'block';
-//     hideNoTask(); 
-//     backToUpcoming();
-// }
 
 
